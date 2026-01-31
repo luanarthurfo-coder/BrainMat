@@ -113,6 +113,15 @@ document.addEventListener('DOMContentLoaded', () => {
             opacity: 1 !important;
             transform: translateY(0) scale(1) !important;
         }
+        @media (max-width: 768px) {
+            .diag-step .option-btn {
+                transform: none !important;
+                transition: none !important;
+            }
+            .animate-in {
+                transform: none !important;
+            }
+        }
     `;
     document.head.appendChild(style);
     // Syllabus Accordion
