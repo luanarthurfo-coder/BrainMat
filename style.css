@@ -458,6 +458,27 @@ header nav {
     text-align: center;
     margin-bottom: 50px;
     font-size: 2.8rem;
+    display: inline-block;
+    /* Ensure it behaves for text gradient */
+    width: 100%;
+    /* Keep centering */
+
+    /* Gradient Text with Animation */
+    background: linear-gradient(90deg, var(--color-dark-teal) 0%, var(--color-primary) 50%, var(--color-dark-teal) 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-walk 4s linear infinite;
+}
+
+@keyframes gradient-walk {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 200% 50%;
+    }
 }
 
 .syllabus {
@@ -601,6 +622,51 @@ header nav {
 .final-align p {
     font-size: 1.2rem;
     opacity: 0.9;
+}
+
+/* Accordion Styles */
+.accordion-header {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.3s;
+    user-select: none;
+    /* Prevent text selection on double click */
+}
+
+.accordion-header:hover {
+    color: var(--color-primary);
+}
+
+.accordion-header span {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.arrow-icon {
+    font-size: 1.2rem;
+    transition: transform 0.4s ease;
+    color: var(--color-text-light);
+}
+
+.accordion-header.active .arrow-icon {
+    transform: rotate(180deg);
+    color: var(--color-primary);
+}
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-out, opacity 0.5s ease-out, margin-top 0.3s ease;
+    opacity: 0;
+}
+
+.accordion-content.active {
+    opacity: 1;
+    margin-top: 20px;
+    /* Only add margin when open */
 }
 
 /* CTA Section */
@@ -951,87 +1017,7 @@ footer p {
     text-decoration: line-through;
 }
 
-/* FOMO Section */
-#fomo {
-    padding: 100px 0;
-    background-color: white;
-}
 
-.fomo-text {
-    text-align: center;
-    max-width: 900px;
-    margin: 0 auto;
-}
-
-.fomo-text h2 {
-    font-size: 2.8rem;
-    margin-bottom: 20px;
-}
-
-.fomo-comparison {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-    margin-top: 50px;
-    text-align: left;
-}
-
-.comp-box {
-    padding: 30px;
-    border-radius: 20px;
-    height: 100%;
-}
-
-.comp-box h4 {
-    margin-bottom: 20px;
-    font-size: 1.2rem;
-}
-
-.comp-box ul li {
-    margin-bottom: 12px;
-    display: flex;
-    gap: 12px;
-    font-weight: 500;
-}
-
-.comp-box.negative {
-    background: #FFF5F5;
-    border: 1px solid #FFE3E3;
-}
-
-.comp-box.negative h4 {
-    color: #C53030;
-}
-
-.comp-box.negative i {
-    color: #FC8181;
-}
-
-.comp-box.positive {
-    background: #F0FFF4;
-    border: 1px solid #C6F6D5;
-}
-
-.comp-box.positive h4 {
-    color: #22543D;
-}
-
-.comp-box.positive i {
-    color: #48BB78;
-}
-
-.timer-msg {
-    margin-top: 15px;
-    color: #E53E3E;
-    font-weight: 700;
-    font-size: 0.9rem;
-}
-
-@media (max-width: 768px) {
-    .fomo-comparison {
-        grid-template-columns: 1fr;
-    }
-}
 
 /* Responsive */
 /* Mobile & Responsive Enhancements */
@@ -1237,5 +1223,114 @@ footer p {
 
     footer {
         padding: 40px 0 20px;
+    }
+}
+
+/* Float Help Button */
+.help-popup {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+    display: block;
+    text-decoration: none;
+    animation: float-entrance 1s ease-out 1s backwards, pulse-subtle 3s infinite;
+}
+
+.help-content {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: var(--color-accent-gradient);
+    color: white;
+    padding: 12px;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px var(--color-primary-glow);
+    border: 2px solid white;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    overflow: hidden;
+}
+
+.help-icon {
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 30px;
+    height: 30px;
+}
+
+.help-text {
+    font-weight: 700;
+    font-size: 1rem;
+    white-space: nowrap;
+    max-width: 200px;
+    opacity: 1;
+    margin-left: 12px;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.help-popup.minimized .help-text {
+    max-width: 0;
+    opacity: 0;
+    margin-left: 0;
+}
+
+.help-popup.minimized .help-content {
+    border-radius: 50%;
+    /* Optional: make it fully round when minimized for standard FAB look, or keep 16px. 
+       User said "square with rounded corners", but often "only icon" implies a button shape.
+       Let's stick to 16px as explicitly requested for the main shape, maybe 50% for minimized?
+       "deixe ele quadrado com cantos arredondados" applies to the general shape. 
+       I will keep 16px for minimized too to be consistent. */
+    border-radius: 16px;
+    padding: 12px;
+}
+
+.help-popup:hover .help-content {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 35px var(--color-primary-glow);
+}
+
+@keyframes float-entrance {
+    from {
+        opacity: 0;
+        transform: translateY(50px) scale(0.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes pulse-subtle {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.03);
+    }
+}
+
+@media (max-width: 768px) {
+    .help-popup {
+        bottom: 20px;
+        right: 20px;
+    }
+
+    .help-content {
+        padding: 10px 20px;
+    }
+
+    .help-icon {
+        font-size: 1.4rem;
+    }
+
+    .help-text {
+        font-size: 0.9rem;
     }
 }
