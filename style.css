@@ -800,6 +800,12 @@ header nav {
     box-shadow: 0 10px 25px var(--color-primary-glow);
 }
 
+@media (max-width: 768px) {
+    .option-btn:hover {
+        transform: none;
+    }
+}
+
 .option-btn.selected {
     background: var(--color-accent-gradient);
     border-color: transparent;
@@ -1614,6 +1620,15 @@ footer p {
 
     .benefits-grid {
         grid-template-columns: 1fr;
+    }
+
+    .options-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .option-btn {
+        animation: none !important;
+        transform: none !important;
     }
 
     footer {
