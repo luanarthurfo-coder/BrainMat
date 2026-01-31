@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnóstico de Estudo | Auron Educa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="img/logo-auron.png">
+</head>
+
+<body>
+    <header id="header" class="scrolled">
+        <nav class="container">
+            <div class="logo">
+                <a href="index.html"><img src="img/logo-auron.png" alt="Auron Educa Logo"></a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Voltar para a Home</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="diag-container container">
+        <!-- Step 1: Exam -->
+        <div id="step-1" class="diag-step animate-in">
+            <span class="badge">Passo 1 de 3</span>
+            <h2>Qual concurso você quer <span class="highlight">conquistar?</span></h2>
+            <p>Selecione seu objetivo para iniciarmos a análise personalizada.</p>
+
+            <div class="search-container">
+                <input type="text" id="concurso-search" placeholder="Pesquise seu concurso..." autocomplete="off">
+                <div id="exam-list" class="exam-list">
+                    <!-- Exams populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Level -->
+        <div id="step-2" class="diag-step" style="display: none;">
+            <span class="badge">Passo 2 de 3</span>
+            <h2>Qual o seu nível <span class="highlight">atual?</span></h2>
+            <p>Seja sincero para que o direcionamento seja realista.</p>
+            <div class="options-grid">
+                <button class="option-btn" data-step="2" data-value="iniciante">
+                    <i class="fas fa-seedling"></i>
+                    <span>Iniciante (Começando do zero)</span>
+                </button>
+                <button class="option-btn" data-step="2" data-value="intermediario">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Intermediário (Já estudo há algum tempo)</span>
+                </button>
+                <button class="option-btn" data-step="2" data-value="avancado">
+                    <i class="fas fa-trophy"></i>
+                    <span>Avançado (Focado em revisões e simulados)</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 3: Hours -->
+        <div id="step-3" class="diag-step" style="display: none;">
+            <span class="badge">Passo 3 de 3</span>
+            <h2>Tempo diário de <span class="highlight">estudo?</span></h2>
+            <p>Quantas horas você consegue dedicar por dia?</p>
+            <div class="options-grid">
+                <button class="option-btn" data-step="3" data-value="2">Até 2 horas</button>
+                <button class="option-btn" data-step="3" data-value="4">De 2 a 4 horas</button>
+                <button class="option-btn" data-step="3" data-value="6">Mais de 4 horas</button>
+            </div>
+        </div>
+
+        <!-- Loading View -->
+        <div id="loading" class="diag-step" style="display: none;">
+            <div class="visual-circle">
+                <i class="fas fa-spinner fa-spin"></i>
+            </div>
+            <h3 id="loading-status">Cruzando dados do edital...</h3>
+            <div class="progress-container">
+                <div id="progress-bar" class="progress-bar"></div>
+            </div>
+        </div>
+
+        <!-- Final Result -->
+        <div id="result" class="diag-result">
+            <div class="result-card">
+                <div class="badge" style="background: rgba(255,255,255,0.1); color: white;">Diagnóstico Concluído</div>
+                <h3 id="result-title">Plano de Foco</h3>
+                <p id="result-intro">Com base no seu perfil, este é o seu mapa de prioridades:</p>
+
+                <ul id="focus-list" class="focus-list">
+                    <!-- Results populated here -->
+                </ul>
+
+                <div class="cta-mini"
+                    style="margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px;">
+                    <h4>Você está a um passo da organização total.</h4>
+                    <p style="margin-bottom: 20px; opacity: 0.8;">O seu perfil exige uma estratégia específica para não
+                        perder tempo com o que não cai.</p>
+                    <button id="final-cta" class="btn btn-primary"
+                        style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 15px;">
+                        <span class="btn-text">Adquirir o Melhor Direcionamento</span>
+                        <i class="fas fa-circle-notch fa-spin btn-loader" style="display: none;"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Redirect Overlay -->
+    <div id="redirect-overlay" class="redirect-overlay" style="display: none;">
+        <div class="redirect-box">
+            <div class="loader-ring"></div>
+            <h3>Estamos redirecionando você...</h3>
+            <p>Preparando seu ambiente de pagamento seguro.</p>
+        </div>
+    </div>
+
+    <script src="diagnostico.js"></script>
+</body>
+
+</html>
