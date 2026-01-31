@@ -66,18 +66,44 @@ document.addEventListener('DOMContentLoaded', () => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('animate-in');
-                observer.unobserve(entry.target);
+            } else {
+                entry.target.classList.remove('animate-in');
             }
         });
     }, observerOptions);
 
     // Elements to animate
-    const animatedElements = document.querySelectorAll('.benefit-card, .content-list li, .hero-text, .hero-image, .syllabus-block');
-    animatedElements.forEach((el, index) => {
+    // Elements to animate - Expanded list for broader effect
+    const animatedElements = document.querySelectorAll('.hero-text, .hero-image, .section-header, .benefit-card, .syllabus-block, .syllabus-card, .about-content, .stat-card, .cta-card');
+
+    animatedElements.forEach((el) => {
         el.style.opacity = '0';
-        el.style.transform = 'translateY(20px)';
-        el.style.transition = `opacity 0.6s ease-out ${index * 0.1}s, transform 0.6s ease-out ${index * 0.1}s`;
+        // Start smaller and slightly lower
+        el.style.transform = 'translateY(40px) scale(0.9)';
+        // Smooth zoom-in transition
+        el.style.transition = 'all 0.8s cubic-bezier(0.22, 1, 0.36, 1)';
         observer.observe(el);
+    });
+
+    // Help Popup Scroll Effect (Minimize on scroll down)
+    const helpPopup = document.querySelector('.help-popup');
+    let lastScrollY = window.scrollY;
+
+    window.addEventListener('scroll', () => {
+        if (!helpPopup) return;
+
+        const currentScrollY = window.scrollY;
+
+        // Minimize if scrolling down and not at top
+        if (currentScrollY > lastScrollY && currentScrollY > 100) {
+            helpPopup.classList.add('minimized');
+        }
+        // Expand if scrolling up
+        else if (currentScrollY < lastScrollY) {
+            helpPopup.classList.remove('minimized');
+        }
+
+        lastScrollY = currentScrollY;
     });
 
     // Add CSS class for animation via JS to keep styles clean
@@ -85,8 +111,27 @@ document.addEventListener('DOMContentLoaded', () => {
     style.innerHTML = `
         .animate-in {
             opacity: 1 !important;
-            transform: translateY(0) !important;
+            transform: translateY(0) scale(1) !important;
         }
     `;
     document.head.appendChild(style);
+    // Syllabus Accordion
+    const accordions = document.querySelectorAll('.accordion-header');
+
+    accordions.forEach(acc => {
+        acc.addEventListener('click', function () {
+            this.classList.toggle('active');
+            const content = this.nextElementSibling;
+
+            if (content.style.maxHeight) {
+                // Close
+                content.style.maxHeight = null;
+                content.classList.remove('active');
+            } else {
+                // Open
+                content.classList.add('active');
+                content.style.maxHeight = content.scrollHeight + "px";
+            }
+        });
+    });
 });
