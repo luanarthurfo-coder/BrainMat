@@ -74,6 +74,7 @@ class BrainMatApp {
         if (!authService.getUser()) {
             const guestProfile = dbService.getGuestProfile();
             this.updateProfileUI(guestProfile);
+            this.updateCategoryBadges(guestProfile);
             headerNav.updateUserUI(null, guestProfile);
         }
     }
@@ -133,6 +134,7 @@ class BrainMatApp {
     handleAuthChange(user, profile) {
         headerNav.updateUserUI(user, profile);
         this.updateProfileUI(profile);
+        this.updateCategoryBadges(profile);
 
         // Exibe ou esconde o botão de logout no modal de perfil
         const btnLogout = document.getElementById('btn-logout');
@@ -162,6 +164,36 @@ class BrainMatApp {
         }
     }
 
+    updateCategoryBadges(profile) {
+        if (!profile || !profile.stats) return;
+
+        const stats = profile.stats;
+        const modeMap = {
+            '+': stats.additionSolved || 0,
+            '-': stats.subtractionSolved || 0,
+            '*': stats.multiplicationSolved || 0,
+            '/': stats.divisionSolved || 0,
+            'mix': stats.correctAnswers || 0
+        };
+
+        document.querySelectorAll('.category-card').forEach(card => {
+            const mode = card.getAttribute('data-mode');
+            const solvedCount = modeMap[mode] || 0;
+            const badgeEl = card.querySelector('.level-badge');
+            
+            if (badgeEl) {
+                if (solvedCount >= 100) {
+                    badgeEl.innerText = '👑 Nível 100/100 (Mestre)';
+                    badgeEl.classList.add('master-level');
+                } else {
+                    const level = Math.min(100, solvedCount + 1);
+                    badgeEl.innerText = `Nível ${level}/100`;
+                    badgeEl.classList.remove('master-level');
+                }
+            }
+        });
+    }
+
     async refreshUserData() {
         const user = authService.getUser();
         let profile;
@@ -172,6 +204,7 @@ class BrainMatApp {
         }
         headerNav.updateUserUI(user, profile);
         this.updateProfileUI(profile);
+        this.updateCategoryBadges(profile);
     }
 }
 
