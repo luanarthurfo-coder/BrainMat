@@ -84,10 +84,33 @@ class DBService {
         }
     }
 
+    // Atualiza Nome de Exibição e Avatar de Foto
+    async updateUserProfile(user, newDisplayName, newPhotoURL) {
+        if (!isFirebaseConfigured() || !db || !user) {
+            const guest = this.getGuestProfile();
+            if (newDisplayName) guest.displayName = newDisplayName;
+            if (newPhotoURL) guest.photoURL = newPhotoURL;
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(guest));
+            return guest;
+        }
+
+        const userRef = doc(db, 'users', user.uid);
+        try {
+            const payload = {};
+            if (newDisplayName) payload.displayName = newDisplayName;
+            if (newPhotoURL) payload.photoURL = newPhotoURL;
+
+            await updateDoc(userRef, payload);
+            const updatedSnap = await getDoc(userRef);
+            return updatedSnap.data();
+        } catch (error) {
+            console.error("Erro ao atualizar perfil no Firestore:", error);
+            return null;
+        }
+    }
+
     // Salva o resultado de uma partida no banco de dados com incrementos atômicos
     async recordGameResults(user, sessionData) {
-        // sessionData: { xpGained, questionsCount, correctCount, wrongCount, bestSessionStreak, opStats: { '+': n, '-': n, '*': n, '/': n } }
-        
         if (!isFirebaseConfigured() || !db || !user) {
             return this.saveGuestGameResults(sessionData);
         }
@@ -95,7 +118,6 @@ class DBService {
         const userRef = doc(db, 'users', user.uid);
 
         try {
-            // Busca perfil atual para conferir se quebrou o recorde de melhor sequência
             const docSnap = await getDoc(userRef);
             const currentData = docSnap.exists() ? docSnap.data() : null;
             const currentBestStreak = currentData?.stats?.bestStreak || 0;
@@ -116,7 +138,6 @@ class DBService {
 
             await updateDoc(userRef, updatePayload);
             
-            // Retorna o perfil atualizado
             const updatedSnap = await getDoc(userRef);
             return updatedSnap.data();
         } catch (error) {

@@ -86,6 +86,8 @@ body {
     background: rgba(23, 18, 54, 0.9);
     border-bottom: 1px solid var(--panel-border);
     gap: 6px;
+    width: 100%;
+    overflow: hidden;
 }
 
 .brand-wrapper {
@@ -178,6 +180,7 @@ body {
     border-radius: 25px;
     border: 1px solid var(--panel-border);
     cursor: pointer;
+    max-width: 140px;
 }
 
 .user-avatar-img {
@@ -186,12 +189,40 @@ body {
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid var(--yellow);
+    flex-shrink: 0;
 }
 
 .user-xp-badge {
     color: var(--yellow);
     font-weight: 900;
     font-size: 0.78rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (max-width: 400px) {
+    .app-header {
+        padding: 10px 8px;
+        gap: 4px;
+    }
+    .brand-title {
+        font-size: 0.98rem;
+    }
+    .brand-icon {
+        font-size: 1.15rem;
+    }
+    .btn-header-action {
+        padding: 5px 7px;
+        font-size: 0.72rem;
+    }
+    .user-profile-pill {
+        padding: 3px 6px 3px 3px;
+        max-width: 105px;
+    }
+    .user-xp-badge {
+        font-size: 0.72rem;
+    }
 }
 
 /* --- TELA DE MENU --- */
@@ -521,6 +552,72 @@ body {
     padding: 5px 14px;
     border-radius: 20px;
     font-size: 0.9rem;
+}
+
+/* PAINEL DE EDIÇÃO DE PERFIL */
+.profile-edit-drawer {
+    background: rgba(23, 18, 54, 0.7);
+    border: 1px solid var(--yellow);
+    border-radius: var(--radius-md);
+    padding: 14px;
+    margin: 12px 0 16px;
+    box-shadow: 0 0 20px rgba(255, 209, 59, 0.15);
+    animation: fadeIn 0.25s ease;
+}
+
+.edit-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.edit-label {
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+}
+
+.edit-input {
+    background: var(--btn-bg);
+    border: 1px solid var(--panel-border);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 800;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.edit-input:focus {
+    border-color: var(--yellow);
+}
+
+.avatar-presets-grid {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 6px 2px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.avatar-preset-item {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid var(--panel-border);
+    cursor: pointer;
+    transition: transform 0.15s, border-color 0.15s;
+    flex-shrink: 0;
+    background: var(--bg-color);
+}
+
+.avatar-preset-item.selected, .avatar-preset-item:hover {
+    border-color: var(--yellow);
+    transform: scale(1.15);
+    box-shadow: 0 0 10px rgba(255, 209, 59, 0.5);
 }
 
 .profile-grid {
