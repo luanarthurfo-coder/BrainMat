@@ -12,7 +12,7 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.0/firebas
 // Configuração do Firebase obtida no Console -> Configurações do Projeto
 export const firebaseConfig = {
    apiKey: "AIzaSyD-TjngQlKFCFzRgLrpPsUl2eafwgQ6VmU",
-    authDomain: "brainmat-93baf.firebaseapp.com",
+    authDomain: "auronbooks.com.br",
     projectId: "brainmat-93baf",
     storageBucket: "brainmat-93baf.firebasestorage.app",
     messagingSenderId: "431699406839",
