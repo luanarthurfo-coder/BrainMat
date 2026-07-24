@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BrainMat – Plataforma de Competição de Matemática</title>
+    <meta name="description" content="Treine sua mente. Suba no ranking global de matemática para escolas!">
+    <!-- Google Fonts: Nunito -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,700;0,800;0,900;1,800&display=swap" rel="stylesheet">
+    <!-- Estilos da Aplicação -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="app">
+    <!-- --- BARRA SUPERIOR (HEADER NAV) --- -->
+    <header class="app-header">
+        <div class="brand-wrapper" id="brand-logo">
+            <span class="brand-icon">🧠</span>
+            <div class="brand-title">BRAIN<span>MAT</span></div>
+        </div>
+
+        <div class="header-actions">
+            <!-- Botão Mute/Unmute Som -->
+            <button class="btn-header-action" id="btn-sound-toggle">🔊 Som: On</button>
+            
+            <!-- Botão Ver Ranking -->
+            <button class="btn-header-action" id="btn-open-ranking">🏆 Ranking</button>
+
+            <!-- Botão Entrar com Google -->
+            <button class="btn-google-login" id="btn-google-login">
+                <svg width="14" height="14" viewBox="0 0 24 24"><path fill="#ffffff" d="M12.24 10.285V13.4h6.887c-.282 1.487-1.785 4.36-6.887 4.36-4.143 0-7.525-3.435-7.525-7.665s3.382-7.665 7.525-7.665c2.355 0 3.93 1.005 4.83 1.875l2.43-2.37C17.895  entertainment 15.66 1 12.24 1 6.03 1 1 6.03 1 12.24s5.03 11.24 11.24 11.24c6.48 0 10.77-4.56 10.77-10.965 0-.735-.075-1.29-.165-1.845H12.24z"/></svg>
+                Entrar
+            </button>
+
+            <!-- Perfil do Usuário Logado -->
+            <div class="user-profile-pill" id="user-profile-wrapper" style="display: none;">
+                <img class="user-avatar-img" id="user-avatar-img" src="" alt="Avatar">
+                <span class="user-xp-badge" id="user-xp-header">0 XP</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- --- TELA DE MENU PRINCIPAL --- -->
+    <main id="menu-screen">
+        <div class="hero-banner">
+            <p class="hero-slogan">Treine sua mente. Suba no ranking.</p>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="tab-btn active" id="tab-desafios">⚡ Desafios</button>
+            <button class="tab-btn" id="tab-profile-trigger">👤 Meu Perfil</button>
+        </div>
+
+        <div class="grid-categories">
+            <div class="category-card" data-mode="+">
+                <div style="font-size: 1.8rem;">➕</div>
+                <h3>Soma</h3>
+                <p>Do básico ao avançado</p>
+                <span class="level-badge">Nível 1/100</span>
+            </div>
+
+            <div class="category-card" data-mode="-">
+                <div style="font-size: 1.8rem;">➖</div>
+                <h3>Subtração</h3>
+                <p>Contas simples e compostas</p>
+                <span class="level-badge">Nível 1/100</span>
+            </div>
+
+            <div class="category-card" data-mode="*">
+                <div style="font-size: 1.8rem;">✖️</div>
+                <h3>Multiplicação</h3>
+                <p>Tabuadas e fatores múltiplos</p>
+                <span class="level-badge">Nível 1/100</span>
+            </div>
+
+            <div class="category-card" data-mode="/">
+                <div style="font-size: 1.8rem;">➗</div>
+                <h3>Divisão</h3>
+                <p>Divisões exatas e rápidas</p>
+                <span class="level-badge">Nível 1/100</span>
+            </div>
+
+            <div class="category-card survival-card" data-mode="mix">
+                <div style="font-size: 1.8rem;">☠️</div>
+                <h3>Sobrevivência</h3>
+                <p>Errou, voltou do início! As 4 operações misturadas</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- --- TELA DE JOGO --- -->
+    <section id="game-screen">
+        <div>
+            <button class="back-btn" id="btn-back-menu">← Voltar ao Menu</button>
+            <div class="game-header">
+                <div class="stats-left">
+                    <div class="conta-num" id="conta-counter">CONTA #1</div>
+                </div>
+                <div class="stats-right">
+                    <div class="xp-score" id="score-display">0</div>
+                    <div class="combo" id="combo-display">x1 🔥</div>
+                </div>
+            </div>
+
+            <div class="progress-container">
+                <div id="progress-bar"></div>
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div id="problem">0 + 0</div>
+        </div>
+
+        <div>
+            <div class="input-display" id="user-input">
+                <span id="input-text"></span><span style="animation: pulse 1s infinite;">|</span>
+            </div>
+
+            <div class="numpad">
+                <button class="num-btn" data-key="1">1</button>
+                <button class="num-btn" data-key="2">2</button>
+                <button class="num-btn" data-key="3">3</button>
+                <button class="num-btn" data-key="4">4</button>
+                <button class="num-btn" data-key="5">5</button>
+                <button class="num-btn" data-key="6">6</button>
+                <button class="num-btn" data-key="7">7</button>
+                <button class="num-btn" data-key="8">8</button>
+                <button class="num-btn" data-key="9">9</button>
+                <button class="num-btn" data-key=".">,</button>
+                <button class="num-btn" data-key="0">0</button>
+                <button class="num-btn btn-del" id="btn-del">⌫</button>
+                <button class="num-btn btn-go" id="btn-go">GO!</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- --- MODAL DE PERFIL --- -->
+    <div class="modal-overlay" id="profile-modal">
+        <div class="modal-content">
+            <button class="modal-close-btn">&times;</button>
+            <div id="profile-view-container">
+                <!-- Conteúdo renderizado via JS -->
+            </div>
+            <button class="btn-header-action" id="btn-logout" style="margin: 20px auto 0; background: var(--red); display: none;">Sair da Conta</button>
+        </div>
+    </div>
+
+    <!-- --- MODAL DE RANKING --- -->
+    <div class="modal-overlay" id="ranking-modal">
+        <div class="modal-content">
+            <button class="modal-close-btn">&times;</button>
+            <div id="ranking-view-container">
+                <!-- Conteúdo renderizado via JS -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Aplicação Principal (ES Modules) -->
+<script type="module" src="js/app.js"></script>
+
+</body>
+</html>
