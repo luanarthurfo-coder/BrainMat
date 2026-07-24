@@ -3,7 +3,7 @@
  */
 
 import { auth, googleProvider, isFirebaseConfigured } from '../firebase/firebase-config.js';
-import { signInWithPopup, signOut as firebaseSignOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { signInWithPopup, signInWithRedirect, getRedirectResult, signOut as firebaseSignOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { dbService } from '../database/db-service.js';
 
 class AuthService {
@@ -13,16 +13,27 @@ class AuthService {
         this.listeners = [];
     }
 
-    init() {
+    async init() {
         if (!isFirebaseConfigured() || !auth) {
             console.warn("AuthService: Firebase não configurado. Modo convidado ativo.");
             return;
         }
 
+        // Captura resultado do redirect (login via mobile/iOS)
+        try {
+            const result = await getRedirectResult(auth);
+            if (result && result.user) {
+                this.currentUser = result.user;
+                this.userProfile = await dbService.ensureUserProfile(result.user);
+                this.notifyListeners();
+            }
+        } catch (error) {
+            console.error("Erro ao obter resultado do redirect:", error);
+        }
+
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 this.currentUser = user;
-                // Busca ou cria o perfil no Firestore
                 this.userProfile = await dbService.ensureUserProfile(user);
             } else {
                 this.currentUser = null;
@@ -38,13 +49,22 @@ class AuthService {
             return null;
         }
 
+        // Detecta mobile para usar redirect (evita bloqueio de popup no iOS/Safari)
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
         try {
-            const result = await signInWithPopup(auth, googleProvider);
-            const user = result.user;
-            this.currentUser = user;
-            this.userProfile = await dbService.ensureUserProfile(user);
-            this.notifyListeners();
-            return this.userProfile;
+            if (isMobile) {
+                // No mobile usamos redirect — a página recarrega e getRedirectResult captura no init()
+                await signInWithRedirect(auth, googleProvider);
+                return null;
+            } else {
+                const result = await signInWithPopup(auth, googleProvider);
+                const user = result.user;
+                this.currentUser = user;
+                this.userProfile = await dbService.ensureUserProfile(user);
+                this.notifyListeners();
+                return this.userProfile;
+            }
         } catch (error) {
             console.error("Erro ao realizar login com o Google:", error);
             if (error.code !== 'auth/popup-closed-by-user') {
